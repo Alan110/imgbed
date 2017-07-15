@@ -1,21 +1,19 @@
 # imgbed
 
-> A Vue.js project
+> 7牛图床客户端
 
-## Build Setup
 
-``` bash
-# install dependencies
-npm install
+vue + 7牛 实现图床客户端
+支持剪贴板拷贝上传
 
-# serve with hot reload at localhost:8080
-npm run dev
+## 使用方式
 
-# build for production with minification
-npm run build
+修改 src/server/app.js 中的7牛配置
 
-# build for production and view the bundle analyzer report
-npm run build --report
+```javascript
+ACCESS_KEY = 'your key';
+SECRET_KEY = 'your key';
+Bucket_Name = 'your space naem';
+port = '19110';
+domain = 'your size prefix';
 ```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
