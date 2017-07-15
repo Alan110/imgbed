@@ -1,6 +1,7 @@
 <template>
   <div class="page-upload">
     <div class="upload-wrapper">
+
       <div class="upload">
         <div class="">
           <img :src="icon_url" width="38px">
@@ -8,7 +9,7 @@
         <div class="upload-tip">截图后粘贴、拖拽图片到这里上传</div>
         <div class="upload-tip2">或者</div>
         <div class="upload-btn-wrapper" style="">
-          <div class="upload-btn">点击选择文件</div>
+          <div class="btn upload-btn">点击选择文件</div>
           <upload 
             :server="upload_url" 
             :formData="formData"
@@ -16,6 +17,16 @@
             class="upload-file"></upload>
         </div>
       </div>
+
+      <div class="imgList">
+          <div :style="{'backgroundImage':'url(' + img.url  + ')'}" class="img-item" v-for="(img,index) in imgList" :key="index" >
+            <div class="img-url">
+                <input type="text" class="input-url" ref="url_input" :value="img.url" />
+                <div class="btn copy-button" @click="copy(index)">复制</div>
+            </div>
+          </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -33,6 +44,7 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       icon_url: upload_icon,
       formData: {},
+      imgList :[],
       upload_url: 'http://upload.qiniu.com/'
     }
   },
@@ -42,7 +54,22 @@ export default {
 
   methods:{
     success (res){
-      console.log(config.url_prefix + res.key);
+      let img = {
+         url : config.url_prefix + res.key
+      };
+      this.imgList.push(img);
+
+      // 滚动到底部
+      setTimeout(function() {
+          document.body.scrollTop = document.body.scrollHeight;
+      }, 30);
+    },
+
+    copy(index){
+        let input = this.$refs.url_input[index];
+        input.focus();
+        input.select();
+        document.execCommand('copy', false, null);
     }
   },
 
@@ -64,19 +91,20 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
+.page-upload{
+    padding: 100px 0;
+}
 .upload-wrapper {
-  width: 50%;
-  background-color: #f9f9f9;
-  height: 338px;
-  position: absolute;
-  left: 50%;
-  top: 30%;
-  transform: translate(-50%, -100px);
+  width: 600px;
+  min-height: 338px;
+  margin: 0 auto;
 }
 
 .upload {
   text-align: center;
   padding: 80px 0;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
 }
 
 .upload-tip {
@@ -90,13 +118,18 @@ export default {
 }
 
 .upload-btn {
-  border-radius: 3px;
   margin-top: 20px;
+}
+
+.btn{
+  border-radius: 3px;
   background-color: #5cb85c;
   color: #fff;
   width: 126px;
   height: 38px;
+  cursor: pointer;
   font-weight: bold;
+  text-align: center;
   font-size: 14px;
   line-height: 38px;
 
@@ -104,6 +137,12 @@ export default {
     background-color: #449d44;
   }
 }
+
+.label{
+    margin : 0 10px;
+    text-align: center;
+}
+
 
 .upload-file {
   cursor: pointer;
@@ -113,6 +152,36 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.imgList{
+    .img-item{
+        margin-bottom: 20px;
+        width: 100%;
+        height: 300px;
+        background-size: cover;
+        position: relative;
+        box-shadow: -1px 0 10px rgba(0, 0, 0, 0.5);
+    }
+    .input-url{
+        flex : 1;
+        margin-right: 10px;
+        outline: none;
+        padding: 0 10px;
+        border: none;
+    }
+    .img-url{
+        position: absolute;
+        bottom: 0;
+        background-color: #fff;
+        height: 38px;
+        line-height: 38px;
+        width : 100%;
+        display: flex;
+    }
+    .copy-button{
+        width :100px;
+    }
 }
 
 .upload-btn-wrapper {

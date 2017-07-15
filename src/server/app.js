@@ -74,34 +74,6 @@ app.post('/downtoken', function(req, res) {
     }
 });
 
-// app.get('/', function(req, res) {
-//     res.render('index.html', {
-//         domain: config.Domain,
-//         uptoken_url: config.Uptoken_Url
-//     });
-// });
-
-// app.get('/multiple', function(req, res) {
-//     res.render('multiple.html', {
-//         domain: config.Domain,
-//         uptoken_url: config.Uptoken_Url
-//     });
-// });
-
-// app.get('/formdata', function(req, res) {
-//     var token = uptoken.token();
-//     res.render('formdata.html', {
-//         domain: config.Domain,
-//         uptoken: token
-//     });
-// });
-
-// app.get('/performance', function(req, res) {
-//     var token = uptoken.token();
-//     res.render('performance.html', {
-//         uptoken: token
-//     });
-// });
 
 
 

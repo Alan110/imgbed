@@ -3,37 +3,6 @@ import Vue from 'vue';
 
 export default {
 
-    /**
-     * 文件上传ajax
-     * option.url    url
-     * option.data   formData
-     * @param {any} option 
-     * @returns promise
-     */
-    ajax(option) {
-        return new Promise((resolve, reject) => {
-            let xhr = new XMLHttpRequest();
-            xhr.open('post', option.url);
-            xhr.send(option.data);
-            xhr.onreadystatechange = function() {
-                if (xhr.status == 200 && xhr.readyState==4) {
-                    let result = null;
-                    let grc = xhr.getResponseHeader("Content-Type");
-                    if (grc.indexOf("json") > -1) {
-                        result = JSON.parse(xhr.responseText);
-                    } else if (grc.indexOf("xml") != -1) {
-                        result = xhr.responseXML;
-                    } else {
-                        result = xhr.responseText;
-                    }
-                    resolve(result);
-                }   
-            };
-            xhr.onerror = function(err){
-                reject(err);
-            }
-        });
-    },
 
     urlParse: function (url) {
         url = url || location.search
@@ -51,66 +20,6 @@ export default {
         return obj
     },
 
-    base64ToBlob: function (base64, mime) {
-        mime = mime || '';
-        var sliceSize = 1024;
-        var byteChars = window.atob(base64);
-        var byteArrays = [];
-
-        for (var offset = 0, len = byteChars.length; offset < len; offset += sliceSize) {
-            var slice = byteChars.slice(offset, offset + sliceSize);
-
-            var byteNumbers = new Array(slice.length);
-            for (var i = 0; i < slice.length; i++) {
-                byteNumbers[i] = slice.charCodeAt(i);
-            }
-
-            var byteArray = new Uint8Array(byteNumbers);
-
-            byteArrays.push(byteArray);
-        }
-
-        return new Blob(byteArrays, { type: mime });
-    },
-
-    /**
-     * Receives an Image Object (can be JPG OR PNG) and returns a new Image Object compressed
-     * @param {Image} source_img_obj The source Image Object
-     * @param {Integer} quality The output quality of Image Object
-     * @param {String} output format. Possible values are jpg and png
-     * @param {Integer} 最大宽度百分比 100
-     * @return {String} base64 url
-     */
-    compressIMG: function (img, quality, output_format, MAX_WIDTH) {
-
-        var canvas = document.createElement("canvas");
-        var ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
-
-        var MAX_HEIGHT = 300;
-        var width = img.width;
-        var height = img.height;
-
-        let tempWidth = (MAX_WIDTH / 100) * width;
-
-        //                if (width > height) {
-        height *= tempWidth / width;
-        width = tempWidth;
-        //                } else {
-        //                    if (height > MAX_HEIGHT) {
-        //                        width *= MAX_HEIGHT / height;
-        //                        height = MAX_HEIGHT;
-        //                    }
-        //                }
-        canvas.width = width;
-        canvas.height = height;
-        var ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, width, height);
-
-        var newImageData = canvas.toDataURL('image/jpeg', quality / 100); // 调整图片质量
-
-        return newImageData;
-    },
 
 
     /**
@@ -200,25 +109,6 @@ export default {
         };
     })(),
 
-
-    // getAuthInfo: function (callback) {
-    //     var parmas = this.urlParse(location.href);
-    //     $.ajax({
-    //         url: getAuthInfoUrl,
-    //         type: 'post',
-    //         data: {
-    //             code: parmas.code
-    //         },
-    //         success(res) {
-    //             if (res.status == 302) {
-    //                 location.href = res.location;
-    //             } else if (res.status == 0) {
-    //                 window.username = res.data.username;
-    //                 callback(res.data);
-    //             }
-    //         }
-    //     })
-    // },
 
     // 全局事件中心
     eventBus: new Vue()
