@@ -364,7 +364,7 @@ export default {
 
     mounted() {
 
-        var clipboard = new ImageClipboard('body');
+        var clipboard = new ImageClipboard();
         let self = this;
 
         clipboard.onpaste = function (base64) {

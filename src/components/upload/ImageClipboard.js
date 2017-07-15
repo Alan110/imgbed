@@ -11,12 +11,6 @@ window.ImageClipboard = function (selector, callback) {
 
     self.init = function (selector, callback) {
 
-        if (typeof selector === "string") {
-            self.el = document.querySelector(selector);
-        }
-        else if (_isElement(selector)) self.el = selector;
-        else return false;
-
         self.pasteCatcher = null;
         self.clipImage = null;
 
@@ -76,38 +70,16 @@ window.ImageClipboard = function (selector, callback) {
         pasteBox.setAttribute("id", "paste_catcher");
         pasteBox.setAttribute("contenteditable", "");
         pasteBox.style.opacity = 0;
+        pasteBox.style.height = 0;
 
         document.body.insertBefore(pasteBox, document.body.firstChild);
 
         pasteBox.focus();
-        self.el.addEventListener("click", function () { pasteBox.focus(); });
 
         return pasteBox;
     }
 
     function _loadImage(source) {
-        // var img = new Image();
-        // self.el.innerHTML = "";
-
-        // img.onload = function () {
-        //     //got picture, display it
-        //     var imgContainer = document.createElement("img");
-        //     imgContainer.src = img.src;
-        //     imgContainer.style.maxHeight = "100%";
-        //     imgContainer.style.maxHeight = "100%";
-        //     self.el.appendChild(imgContainer);
-
-        //     //empty out the ol' pastecatcher
-        //     if (self.pasteCatcher) self.pasteCatcher.innerHTML = "";
-
-        //     self.clipImage = img;
-
-        //     if (typeof self.onpaste === 'function')
-        //         self.onpaste(img.src);
-        // };
-
-        // img.src = source;
-
         self.onpaste.call(self, source.split(",")[1]); //callback(base64, file-type)
     }
 
